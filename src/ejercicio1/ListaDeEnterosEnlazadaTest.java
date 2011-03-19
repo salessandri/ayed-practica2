@@ -226,6 +226,7 @@ public class ListaDeEnterosEnlazadaTest {
 		assertFalse(l.fin());
 		l.proximo();
 		assertTrue(l.fin());
+
 	}
 
 }
