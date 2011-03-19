@@ -3,6 +3,7 @@ package ejercicio1;
 public class ListaDeEnterosEnlazada extends ListaDeEnteros {
 	private NodoEntero inicio;
 	private NodoEntero actual;
+	
 	private class NodoEntero {
 		private Integer dato;
 		private NodoEntero siguiente;
@@ -21,71 +22,104 @@ public class ListaDeEnterosEnlazada extends ListaDeEnteros {
 		}
 	
 	}
+	
 	@Override
-	void comenzar() {
+	public void comenzar() {
 		actual = inicio;
 	}
 
 	@Override
-	void proximo() {
+	public void proximo() {
 		actual = actual.getSiguiente();
 
 	}
 
 	@Override
-	Integer elemento() {
-		return null;
-	}
-
-	@Override
-	Integer elemento(int pos) {
+	public Integer elemento() {
 		return actual.getDato();
 	}
 
 	@Override
-	boolean agregar(Integer elem, int pos) {
-		// TODO Auto-generated method stub
-		return false;
+	public Integer elemento(int pos) {
+		this.comenzar();
+		while (pos-- > 0)
+			this.proximo();
+		return actual.getDato();
 	}
 
 	@Override
-	boolean eliminar() {
-		if (actual != null) {
-			if (actual == inicio)
-				inicio = inicio.getSiguiente();
-			else {
-				this.previous(actual).setSiguiente(actual.getSiguiente());
-			}
+	public boolean agregar(Integer elem, int pos) {
+		if (pos < 0 || pos > this.tamanio())
+			return false;
+		this.tamanio++;
+		NodoEntero aux = new NodoEntero();
+		aux.setDato(elem);
+		if (pos == 0) {
+			aux.setSiguiente(inicio);
+			inicio = aux;
+		}
+		else {
+			this.comenzar();
+			while (--pos > 0)
+				this.proximo();
+			aux.setSiguiente(actual.getSiguiente());
+			actual.setSiguiente(aux);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean eliminar() {
+		if (actual == null)
+			return false;
+		
+		this.tamanio--;
+		if (actual == inicio) {
+			inicio = inicio.getSiguiente();
+			return true;
+		}
+		else {
+			NodoEntero p = inicio;
+			while (p.getSiguiente() != actual)
+				p = p.getSiguiente();
+			p.setSiguiente(actual.getSiguiente());
+			actual = p.getSiguiente();
+			return true;
 		}
 	}
 
 	@Override
-	boolean eliminar(int pos) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean eliminar(int pos) {
+		if (pos < 0 || pos >= this.tamanio())
+			return false;
+		this.tamanio--;
+		if (pos == 0) {
+			inicio = inicio.getSiguiente();
+			return true;
+		}
+		this.comenzar();
+		while (--pos > 0)
+			this.proximo();
+		actual.setSiguiente(actual.getSiguiente().getSiguiente());
+		return true;
 	}
 
 	@Override
-	boolean incluye(Integer elem) {
-		this.find(elem);
-		return (actual != null);
-	}
-
-	private void find(Object elem) {// no me interesa q apunten al mismo objeto, sino q el contenido sea el mismo!!!
-		this.comenzar();  
-		while (!this.fin() && !this.elemento().getDato().equals(elem))
-			       this.proximo();
+	public boolean incluye(Integer elem) {
+		this.comenzar();
+		while (!this.fin() && !this.elemento().equals(elem))
+			this.proximo();
+		return !this.fin();
 	
 	}
 	
 	@Override
-	int tamanio() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int tamanio() {
+		return this.tamanio;
 	}
 
 	@Override
-	boolean fin() {
+	public boolean fin() {
 		return (actual==null);
 	}
 }
