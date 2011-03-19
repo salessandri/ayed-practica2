@@ -2,60 +2,87 @@ package ejercicio1;
 
 public class ListaDeEnterosConArreglos extends ListaDeEnteros {
 
-	private int[] datos = new int[100];
+	private int[] datos = new int[200];
+	private int actual = 0;
+	private int tamLogico = 0;
 	
 	@Override
+	public 
 	void comenzar() {
-		// TODO Auto-generated method stub
-		
+		actual = 0;
 	}
 
 	@Override
+	public
 	void proximo() {
-		// TODO Auto-generated method stub
-		
+		actual++;		
 	}
 
 	@Override
+	public
 	Integer elemento() {
-		// TODO Auto-generated method stub
-		return null;
+		return datos[actual];
 	}
 
 	@Override
+	public
 	Integer elemento(int pos) {
-		// TODO Auto-generated method stub
-		return null;
+		return datos[pos];
 	}
 
 	@Override
+	public
 	boolean agregar(Integer elem, int pos) {
-		// TODO Auto-generated method stub
-		return false;
+		if (pos < 0 || pos > tamLogico || pos >= datos.length)
+			return false;
+		tamLogico++;
+		for (int i = tamLogico; i > pos; i--)
+			datos[i] = datos[i-1];
+		datos[pos] = elem;
+		return true;
 	}
 
 	@Override
+	public
 	boolean eliminar() {
-		// TODO Auto-generated method stub
-		return false;
+		if (actual >= tamLogico)
+			return false;
+		tamLogico--;
+		for (int i = actual; i < tamLogico; i++)
+			datos[i] = datos[i + 1];
+		return true;
 	}
 
 	@Override
+	public
 	boolean eliminar(int pos) {
-		// TODO Auto-generated method stub
-		return false;
+		if (pos < 0 || pos >= tamLogico)
+			return false;
+		tamLogico--;
+		for (int i = pos; i < tamLogico; i++)
+			datos[i] = datos[i + 1];
+		return true;
 	}
 
 	@Override
+	public
 	boolean incluye(Integer elem) {
-		// TODO Auto-generated method stub
-		return false;
+		this.comenzar();
+		while (!this.fin() && this.elemento() != elem)
+			this.proximo();
+		return !this.fin();
 	}
 
 	@Override
+	public
 	int tamanio() {
-		// TODO Auto-generated method stub
-		return 0;
+		return tamLogico;
+	}
+
+	@Override
+	public
+	boolean fin() {
+		return actual >= tamLogico;
 	}
 
 }
