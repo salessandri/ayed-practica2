@@ -1,6 +1,8 @@
 package ejercicio1;
 
 public class ListaDeEnterosEnlazada extends ListaDeEnteros {
+	private NodoEntero inicio;
+	private NodoEntero actual;
 	private class NodoEntero {
 		private Integer dato;
 		private NodoEntero siguiente;
@@ -21,26 +23,23 @@ public class ListaDeEnterosEnlazada extends ListaDeEnteros {
 	}
 	@Override
 	void comenzar() {
-		// TODO Auto-generated method stub
-
+		actual = inicio;
 	}
 
 	@Override
 	void proximo() {
-		// TODO Auto-generated method stub
+		actual = actual.getSiguiente();
 
 	}
 
 	@Override
 	Integer elemento() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	Integer elemento(int pos) {
-		// TODO Auto-generated method stub
-		return null;
+		return actual.getDato();
 	}
 
 	@Override
@@ -51,8 +50,13 @@ public class ListaDeEnterosEnlazada extends ListaDeEnteros {
 
 	@Override
 	boolean eliminar() {
-		// TODO Auto-generated method stub
-		return false;
+		if (actual != null) {
+			if (actual == inicio)
+				inicio = inicio.getSiguiente();
+			else {
+				this.previous(actual).setSiguiente(actual.getSiguiente());
+			}
+		}
 	}
 
 	@Override
@@ -63,14 +67,25 @@ public class ListaDeEnterosEnlazada extends ListaDeEnteros {
 
 	@Override
 	boolean incluye(Integer elem) {
-		// TODO Auto-generated method stub
-		return false;
+		this.find(elem);
+		return (actual != null);
 	}
 
+	private void find(Object elem) {// no me interesa q apunten al mismo objeto, sino q el contenido sea el mismo!!!
+		this.comenzar();  
+		while (!this.fin() && !this.elemento().getDato().equals(elem))
+			       this.proximo();
+	
+	}
+	
 	@Override
 	int tamanio() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	@Override
+	boolean fin() {
+		return (actual==null);
+	}
 }

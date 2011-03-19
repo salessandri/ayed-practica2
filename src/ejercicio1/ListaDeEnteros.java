@@ -13,5 +13,6 @@ public abstract class ListaDeEnteros {
 	abstract boolean eliminar(int pos);
 	abstract boolean incluye(Integer elem);
 	abstract int tamanio();
+	abstract boolean fin();
 
 }
